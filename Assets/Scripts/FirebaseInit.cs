@@ -7,6 +7,7 @@ public class FirebaseInit : MonoBehaviour
 {
     private BannerView bannerView;
     // Start is called before the first frame update
+    // my ad id ca-app-pub-7467344290953936~5681050989
     void Start()
     {
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => 
