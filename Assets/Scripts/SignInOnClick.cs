@@ -13,7 +13,18 @@ public class SignInOnClick : MonoBehaviour {
   // Initialize Play Games Configuration and Activate it.
   PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
    .RequestServerAuthCode(false /*forceRefresh*/)
-   .Build();
+   // enables saving game progress.
+        .EnableSavedGames()
+        // requests the email address of the player be available.
+        // Will bring up a prompt for consent.
+        .RequestEmail()
+        // requests a server auth code be generated so it can be passed to an
+        //  associated back end server application and exchanged for an OAuth token.
+        .RequestServerAuthCode(false)
+        // requests an ID token be generated.  This OAuth token can be used to
+        //  identify the player to other services such as Firebase.
+        .RequestIdToken()
+        .Build();
   PlayGamesPlatform.InitializeInstance(config);
   PlayGamesPlatform.Activate ();
   Debug.LogFormat ("SignInOnClick: Play Games Configuration initialized");
@@ -21,6 +32,7 @@ public class SignInOnClick : MonoBehaviour {
 
 
  public void SignInWithPlayGames () {
+     
   // Initialize Firebase Auth
   Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
@@ -53,8 +65,21 @@ public class SignInOnClick : MonoBehaviour {
     }
 
     Firebase.Auth.FirebaseUser newUser = task.Result;
+    ((GooglePlayGames.PlayGamesPlatform)Social.Active).SetGravityForPopups(Gravity.BOTTOM);
     Debug.LogFormat ("SignInOnClick: User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
    });
+
+
+///My added
+Firebase.Auth.FirebaseUser user = auth.CurrentUser;
+if (user != null) {
+  string playerName = user.DisplayName;
+
+  // The user's Id, unique to the Firebase project.
+  // Do NOT use this value to authenticate with your backend server, if you
+  // have one; use User.TokenAsync() instead.
+  string uid = user.UserId;
+}
   });
  }
 }
