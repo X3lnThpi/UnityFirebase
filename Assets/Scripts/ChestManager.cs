@@ -15,6 +15,7 @@ public class ChestManager : MonoBehaviour
     public TMP_Text coinCount;
     public TMP_Text gemCount;
     int coins, gems;
+    ServiceEvents e;
 
     GameObject[] ChestList = new GameObject[4];
 
@@ -60,8 +61,17 @@ public class ChestManager : MonoBehaviour
                     //coins += hit.transform.GetComponent<ChestObject>().maxCoins;
                     coinCount.text = coins.ToString();
                     Destroy(hit.transform.gameObject);
+                    //e.OnUnlockWithGem += Dodo(); 
+                    
+                    //e.OnUnlockWithGem?.Invoke(6);
                 }
             }
         }
+    }
+
+    void Dodo(int j)
+    {
+        Debug.Log(j);
+        
     }
 }
